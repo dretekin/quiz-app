@@ -4,7 +4,8 @@
 	margin: 0;
 }
 body {
-	font-family: Roboto;
+	font-family: Poppins;
+	background-color: #f3f3fb;
 }
 
 .container {
@@ -12,12 +13,12 @@ body {
 	justify-content: center;
 	align-content: center;
 	height: 100vh;
-	background-color: #f3f3fb;
 }
 
 form {
-	width: 500px;
-	padding-top: 3rem;
+	width: 100%;
+	max-width: 600px;
+	padding-top: 5rem;
 	border-radius: 10px;
 	background-color: #fff;
 	-webkit-box-shadow: 0px 0px 22px -9px rgba(164, 170, 189, 0.65);
@@ -25,18 +26,10 @@ form {
 	box-shadow: 0px 0px 22px -9px rgba(164, 170, 189, 0.65);
 }
 
-ul.questions {
-	list-style: none;
-	padding-top: 1rem;
-	padding-bottom: 3rem;
-	padding-left: 4rem;
-}
-
 .title {
 	font-size: 1.5rem;
 	text-align: center;
-	padding-bottom: 0.5rem;
-	font-weight: normal;
+	padding: 0.5rem 2.5rem;
 }
 
 .subtitle {
@@ -45,7 +38,21 @@ ul.questions {
 	color: #a4aabd;
 }
 
+ul.questions {
+	font-size: 1.2rem;
+	list-style: none;
+	padding-top: 1rem;
+	padding-bottom: 3rem;
+	padding-left: 4rem;
+	padding-right: 4rem;
+}
+
+.question {
+	padding: 1rem 0.5rem;
+}
+
 input[type="submit"] {
+	font-size: 1.2rem;
 	width: 100%;
 	padding: 1.5rem;
 	border: none;
@@ -57,13 +64,35 @@ input[type="submit"] {
 	border-bottom-right-radius: 10px;
 }
 
-.question {
-	padding: 0.5rem;
-}
-
 label {
 	padding-left: 2px;
 }
 
 input[type="radio"] {
+}
+
+@media screen and (max-width: 600px) {
+	.container {
+		margin: 0 1rem;
+	}
+
+	form {
+		max-width: 100%;
+		padding-top: 2rem;
+	}
+
+	.title {
+		font-size: 1rem;
+		padding: 0.5rem 0.5rem;
+	}
+
+	ul.questions {
+		font-size: 1rem;
+		padding-left: 1rem;
+		padding-right: 1rem;
+	}
+
+	.question {
+		padding: 1rem 0.5rem;
+	}
 }
