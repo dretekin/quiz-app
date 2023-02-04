@@ -19,6 +19,7 @@ body {
 form {
 	width: 100%;
 	max-width: 100%;
+	min-width: 370px;
 	padding-top: 2rem;
 	border-radius: 10px;
 	background-color: #fff;
@@ -27,19 +28,21 @@ form {
 	box-shadow: 0px 0px 22px -9px rgba(164, 170, 189, 0.65);
 }
 
-.title {
+.quizCard {
+	display: none;
+}
+
+.quizCard:first-child {
+	display: block;
+}
+
+.question {
 	font-size: 1.2rem;
 	text-align: center;
 	padding: 0.5rem 1rem;
 }
 
-.subtitle {
-	font-size: 0.8rem;
-	text-align: center;
-	color: #a4aabd;
-}
-
-ul.questions {
+ul.answers {
 	font-size: 1rem;
 	list-style: none;
 	padding-top: 1rem;
@@ -63,9 +66,10 @@ input[type="submit"] {
 	border: 0 5px 5px 0;
 	border-bottom-left-radius: 10px;
 	border-bottom-right-radius: 10px;
+	cursor: pointer;
 }
 
-label {
+.answer-label {
 	padding-left: 2px;
 }
 
@@ -78,7 +82,7 @@ input[type="radio"] {
 		padding-top: 5rem;
 	}
 
-	.title {
+	.question {
 		font-size: 1.5rem;
 		padding: 0.5rem 2.5rem;
 	}
