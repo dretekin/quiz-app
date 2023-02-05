@@ -9,6 +9,10 @@ const quiz = [
 		answers: ["<h1> to <h6>", "<td>", "<button>", "<footer>"],
 	},
 	{
+		question: "What tag is used to define a hyperlink, or link to another page",
+		answers: ["<a>", "<em>", "<strong>", "<blockquote>"],
+	},
+	{
 		question: "What tag is used to define a list item (in a bulleted list)",
 		answers: ["<s>", "<ul>", "<u>", "<li>"],
 	},
@@ -16,6 +20,11 @@ const quiz = [
 		question:
 			"What tag is used to define an interactive field where users can enter data?",
 		answers: ["<dialog>", "<enterpoint>", "<datalist>", "<input>"],
+	},
+	{
+		question:
+			"What element is a container for all the head elements, and may include the document title, scripts, styles, meta information, and more?",
+		answers: ["<head></head>", "<br></br>", "<body></body>", "<title></title>"],
 	},
 	{
 		question:
@@ -29,37 +38,76 @@ const quiz = [
 	},
 	{
 		question:
-			"What tag is used to specify a section of text that has been quoted from another source?",
-		answers: ["<em>", "<strong>", "<blockquote>", "<a>"],
+			"What tag can be used to insert a line break or blank line in an HTML document?",
+		answers: ["<br></br>", "<body></body>", "<head></head>", "<title></title>"],
 	},
-	{
-		question:
-			"What element is a container for all the head elements, and may include the document title, scripts, styles, meta information, and more?",
-		answers: ["<head></head>", "<br></br>", "<body></body>", "<title></title>"],
-	},
-	{
-		question: "What tag is used to define a hyperlink, or link to another page",
-		answers: ["<a>", "<em>", "<strong>", "<blockquote>"],
-	},
+
 	{
 		question: "What tag is used to define a table or image notation (caption)?",
 		answers: ["<caption>", "<code>", "<embed>", "<!DOCTYPE>"],
 	},
 ];
 
+const quizAnswersArr = [
+	"<embed>",
+	"<td>",
+	"<a>",
+	"<li>",
+	"<input>",
+	"<head></head>",
+	"<code>",
+	"<blockquote>",
+	"<br></br>",
+	"<caption>",
+];
+
 const form = document.querySelector("form");
 
 // createCard();
 let quizCounter = 0;
+const quizLength = quiz.length - 1;
+let playerScore = 0;
 
 form.addEventListener("submit", (event) => {
 	event.preventDefault();
+
+	const currQuizCard = document.querySelector(".quizCard");
+
+	if (quizCounter == quizLength) {
+		currQuizCard.remove();
+
+		form.querySelector("input[type=submit]").value = "try again";
+		// player score start from 0
+		if (playerScore) printResult(playerScore++);
+		return;
+	}
+
+	const userAnswer = currQuizCard.querySelector(
+		'input[name="answer"]:checked'
+	).value;
+
+	if (userAnswer == quizAnswersArr[quizCounter]) {
+		playerScore++;
+	}
+
+	currQuizCard.remove();
+
+	quizCounter++;
+
+	createCard(quiz[quizCounter]);
 });
 
-quiz.forEach((quizObj, quizNum) => {
-	console.log(quizObj);
-	createCard(quizObj);
-});
+function printResult() {
+	const resultEle = document.createElement("p");
+	resultEle.setAttribute("class", "result");
+	const resultText = document.createTextNode(
+		`You answered ${playerScore} out of 10 questions correctly!`
+	);
+	resultEle.appendChild(resultText);
+	form.prepend(resultEle);
+}
+
+createCard(quiz[0]);
 
 function createCard(quizObj) {
 	const quizCard = document.createElement("section");
@@ -82,6 +130,7 @@ function createCard(quizObj) {
 
 		answerArr.forEach((answer, index) => {
 			const answerItem = document.createElement("li");
+			answerItem.setAttribute("class", "answer-option-item");
 
 			answerItems.appendChild(answerItem);
 
@@ -97,7 +146,9 @@ function createCard(quizObj) {
 
 			const inputLabel = document.createElement("label");
 			const inputLabelText = document.createTextNode(answer);
-			inputLabel.appendChild(inputLabelText);
+			const codeFormat = document.createElement("code");
+			codeFormat.appendChild(inputLabelText);
+			inputLabel.appendChild(codeFormat);
 			inputLabel.setAttribute("for", "option-" + index);
 			inputLabel.setAttribute("class", "answer-label");
 
