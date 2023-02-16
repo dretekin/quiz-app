@@ -64,7 +64,9 @@ input[type="submit"] {
 	padding-bottom: 0.5rem;
 }
 
-input[type="radio"] {
+.hidden {
+	opacity: 0;
+	visibility: hidden;
 }
 
 @media screen and (min-width: 600px) {

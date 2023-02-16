@@ -67,11 +67,18 @@ const form = document.querySelector("form");
 let quizCounter = 0;
 const quizLength = quiz.length - 1;
 let playerScore = 0;
+console.log(quizLength);
 
 form.addEventListener("submit", (event) => {
 	event.preventDefault();
 
 	const currQuizCard = document.querySelector(".quizCard");
+
+	const userAnswer = currQuizCard.querySelector(
+		'input[name="answer"]:checked'
+	).value;
+
+	if (userAnswer == quizAnswersArr[quizCounter]) playerScore++;
 
 	if (quizCounter == quizLength) {
 		currQuizCard.remove();
@@ -82,13 +89,7 @@ form.addEventListener("submit", (event) => {
 		return;
 	}
 
-	const userAnswer = currQuizCard.querySelector(
-		'input[name="answer"]:checked'
-	).value;
-
-	if (userAnswer == quizAnswersArr[quizCounter]) {
-		playerScore++;
-	}
+	console.log(playerScore);
 
 	currQuizCard.remove();
 
