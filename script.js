@@ -65,6 +65,7 @@ const form = document.querySelector("form");
 const question = document.querySelector(".question");
 const answersItems = document.querySelectorAll(".answer-option-item");
 const quizProgress = document.getElementById("quiz-progress");
+const quizProgressText = document.querySelector(".progress-text");
 
 let quizCount = 0;
 let correctScoreCount = 0;
@@ -83,8 +84,11 @@ form.addEventListener("submit", (event) => {
 		".question-and-answers-container"
 	);
 
-	console.log(quizProgress);
-	quizProgress.value = (quizCount / quizData.length) * 100;
+	const quizProgressCalc = (quizCount / quizData.length) * 100;
+
+	quizProgress.value = quizProgressCalc;
+
+	quizProgressText.textContent = quizProgressCalc;
 
 	// check for last card
 	if (!quizComplete && quizCount >= quizData.length) {

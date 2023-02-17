@@ -86,13 +86,24 @@ input[type="submit"] {
 }
 
 .progress-bar {
+	position: relative;
+	width: var(--question-and-answers-container-width);
+	margin: auto;
 	margin-top: 1rem;
 }
 
+.progress-text {
+	position: absolute;
+	top: 0;
+	left: 0;
+	color: #fff;
+}
+
 #quiz-progress {
-	width: var(--question-and-answers-container-width);
 	display: block;
-	margin: auto;
+	width: 100%;
+	/* margin: auto; */
+	padding: 12px 0;
 }
 
 @media screen and (min-width: 600px) {
