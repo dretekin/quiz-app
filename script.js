@@ -72,7 +72,8 @@ let correctScoreCount = 0;
 // let totalScore = 0;
 let quizComplete = false;
 
-document.documentElement.style.setProperty(
+const root = document.documentElement;
+root.style.setProperty(
 	"--question-and-answers-container-width",
 	form.getBoundingClientRect().width * 0.8 + "px"
 );
@@ -88,7 +89,10 @@ form.addEventListener("submit", (event) => {
 
 	quizProgress.value = quizProgressCalc;
 
-	quizProgressText.textContent = quizProgressCalc;
+	// quizProgressText.textContent = quizProgressCalc;
+
+	root.style.setProperty("--quiz-progress-px", quizProgressCalc);
+	root.style.setProperty("--quiz-progress-fill", `-${100 - quizProgressCalc}%`);
 
 	// check for last card
 	if (!quizComplete && quizCount >= quizData.length) {

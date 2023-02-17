@@ -15,10 +15,14 @@
 	<body>
 		<div class="container">
 			<form>
-				<div class="progress-bar">
-					<span class="progress-text">0%</span>
+				<progress id="file" value="32" max="100">32%</progress>
 
-					<progress id="quiz-progress" value="0" max="100"></progress>
+				<div class="progress-bar">
+					<span class="progress-text"></span>
+
+					<div id="quiz-progress">
+						<div class="progress-fill"></div>
+					</div>
 				</div>
 				<section class="question-and-answers-container">
 					<h2 class="question"></h2>

@@ -6,6 +6,8 @@
 
 :root {
 	--question-and-answers-container-width: 0px;
+	--quiz-progress-px: 0;
+	--quiz-progress-fill: -100%;
 }
 
 body {
@@ -92,18 +94,45 @@ input[type="submit"] {
 	margin-top: 1rem;
 }
 
+@property --num {
+	syntax: "<integer>";
+	initial-value: 0;
+	inherits: false;
+}
+
+.progress-text {
+	transition: --num 1s;
+	counter-set: num var(--num);
+	--num: var(--quiz-progress-px);
+}
+
+.progress-text::after {
+	content: counter(num);
+}
+
 .progress-text {
 	position: absolute;
 	top: 0;
 	left: 0;
 	color: #fff;
+	line-height: 0.9;
+	z-index: 2;
 }
 
 #quiz-progress {
-	display: block;
 	width: 100%;
-	/* margin: auto; */
-	padding: 12px 0;
+	border: 1px solid #c7c7c7;
+	border-radius: 20px;
+	overflow: hidden;
+}
+
+.progress-fill {
+	height: 10px;
+	width: 100%;
+	background: red;
+	border-radius: 20px;
+	transform: translateX(var(--quiz-progress-fill));
+	transition: transform 0.3s ease;
 }
 
 @media screen and (min-width: 600px) {
