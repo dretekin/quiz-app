@@ -89,10 +89,14 @@ form.addEventListener("submit", (event) => {
 
 	quizProgress.value = quizProgressCalc;
 
-	// quizProgressText.textContent = quizProgressCalc;
+	quizProgressText.style.visibility = "visible";
 
-	root.style.setProperty("--quiz-progress-px", quizProgressCalc);
+	root.style.setProperty("--quiz-progress-percentage", quizProgressCalc);
 	root.style.setProperty("--quiz-progress-fill", `-${100 - quizProgressCalc}%`);
+	root.style.setProperty(
+		"--quiz-progress-text-move",
+		`${quizProgressCalc / 2}%`
+	);
 
 	// check for last card
 	if (!quizComplete && quizCount >= quizData.length) {

@@ -6,8 +6,9 @@
 
 :root {
 	--question-and-answers-container-width: 0px;
-	--quiz-progress-px: 0;
+	--quiz-progress-percentage: 0;
 	--quiz-progress-fill: -100%;
+	--quiz-progress-text-move: 0;
 }
 
 body {
@@ -101,22 +102,25 @@ input[type="submit"] {
 }
 
 .progress-text {
-	transition: --num 1s;
-	counter-set: num var(--num);
-	--num: var(--quiz-progress-px);
-}
-
-.progress-text::after {
-	content: counter(num);
-}
-
-.progress-text {
+	visibility: hidden;
 	position: absolute;
 	top: 0;
-	left: 0;
+	/* text size about 20px; divid by 2 to get better center positioning */
+	left: calc(var(--quiz-progress-text-move) - 10px);
+	font-size: 14px;
 	color: #fff;
 	line-height: 0.9;
 	z-index: 2;
+	transition: --num 0.8s, left 0.4s ease;
+	counter-set: num var(--num);
+	--num: var(--quiz-progress-percentage);
+}
+
+.progress-text::before {
+	content: counter(num);
+}
+.progress-text::after {
+	content: "%";
 }
 
 #quiz-progress {
@@ -129,7 +133,7 @@ input[type="submit"] {
 .progress-fill {
 	height: 10px;
 	width: 100%;
-	background: red;
+	background: #4370e7;
 	border-radius: 20px;
 	transform: translateX(var(--quiz-progress-fill));
 	transition: transform 0.3s ease;
