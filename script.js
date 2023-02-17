@@ -62,6 +62,8 @@ const quizAnswersArr = [
 ];
 
 const form = document.querySelector("form");
+const question = document.querySelector(".question");
+const answersItems = document.querySelectorAll(".answer-option-item");
 
 let quizCount = 0;
 let correctScoreCount = 0;
@@ -108,18 +110,11 @@ form.addEventListener("submit", (event) => {
 		return;
 	}
 
-	// if (quizCount >= quizData.length - 1) {
-
-	// }
 	getAndMarkUserAnswer();
 
-	currQuestionAndAnswers.remove();
+	resetAnswerInputs();
 
-	createCard(quizData[quizCount]);
-
-	// setFormHeight(100);
-
-	// quizCounter++;
+	setQuestionAndAnswers();
 
 	function getAndMarkUserAnswer() {
 		const userAnswer = currQuestionAndAnswers.querySelector(
@@ -130,8 +125,28 @@ form.addEventListener("submit", (event) => {
 	}
 });
 
-createCard(quizData[quizCount]);
-// createCard(quizData[1], createAnswers);
+setQuestionAndAnswers();
+function setQuestionAndAnswers() {
+	question.textContent = quizData[quizCount].question;
+
+	for (let i = 0; i < answersItems.length; i++) {
+		const answer = quizData[quizCount].answers[i];
+		const answerItem = answersItems[i];
+		answerItem.firstElementChild.value = answer;
+		const label = answerItem.lastElementChild.firstElementChild;
+
+		label.textContent = answer;
+	}
+
+	quizCount++;
+}
+
+function resetAnswerInputs() {
+	for (let i = 0; i < answersItems.length; i++) {
+		const answerItem = answersItems[i];
+		answerItem.firstElementChild.checked = false;
+	}
+}
 
 /**
  *
@@ -155,78 +170,4 @@ function createScoreEle(score) {
 	scoreEle.setAttribute("class", "result");
 	scoreEle.appendChild(scoreText);
 	return scoreEle;
-}
-
-/**
- *
- * @param {object} questionAndAnswers
- */
-function createCard(questionAndAnswers) {
-	quizCount++;
-	// question and aswers container
-	const questionAndAnswersContainer = document.createElement("section");
-	questionAndAnswersContainer.setAttribute(
-		"class",
-		"question-and-answers-container"
-	);
-
-	// question container
-	const question = document.createElement("h2");
-	const questionText = document.createTextNode(questionAndAnswers.question);
-	question.setAttribute("class", "question");
-	question.appendChild(questionText);
-
-	questionAndAnswersContainer.appendChild(question);
-
-	const answerItems = createAnswers(questionAndAnswers.answers);
-
-	questionAndAnswersContainer.appendChild(answerItems);
-
-	form.prepend(questionAndAnswersContainer);
-
-	const currQuestionAndAnswersContainerHeight =
-		questionAndAnswersContainer.getBoundingClientRect().height;
-
-	setFormHeight(currQuestionAndAnswersContainerHeight);
-}
-
-/**
- *
- * @param {array} asnwers
- */
-function createAnswers(answersArray) {
-	// answers items container
-	const answerItems = document.createElement("ul");
-	answerItems.setAttribute("class", "answers");
-
-	answersArray.forEach((answer, index) => {
-		const answerItem = document.createElement("li");
-		answerItem.setAttribute("class", "answer-option-item");
-
-		// answerItems.appendChild(answerItem);
-
-		const answerInput = document.createElement("input");
-		answerInput.setAttribute("type", "radio");
-		answerInput.setAttribute("id", "option-" + index);
-		answerInput.setAttribute("class", "answer-input");
-		answerInput.setAttribute("name", "answer");
-		answerInput.setAttribute("value", answer);
-		answerInput.required = true;
-
-		answerItem.appendChild(answerInput);
-
-		const inputLabel = document.createElement("label");
-		const inputLabelText = document.createTextNode(answer);
-		const codeFormat = document.createElement("code");
-		codeFormat.appendChild(inputLabelText);
-		inputLabel.appendChild(codeFormat);
-		inputLabel.setAttribute("for", "option-" + index);
-		inputLabel.setAttribute("class", "answer-label");
-
-		answerItem.appendChild(inputLabel);
-
-		answerItems.appendChild(answerItem);
-	});
-
-	return answerItems;
 }
