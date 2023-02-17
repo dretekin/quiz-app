@@ -64,31 +64,27 @@ const quizAnswersArr = [
 const form = document.querySelector("form");
 const question = document.querySelector(".question");
 const answersItems = document.querySelectorAll(".answer-option-item");
+const quizProgress = document.getElementById("quiz-progress");
 
 let quizCount = 0;
 let correctScoreCount = 0;
 // let totalScore = 0;
 let quizComplete = false;
 
+document.documentElement.style.setProperty(
+	"--question-and-answers-container-width",
+	form.getBoundingClientRect().width * 0.8 + "px"
+);
+
 form.addEventListener("submit", (event) => {
 	event.preventDefault();
-
-	// if (userAnswer == quizAnswersArr[quizCounter]) playerScore++;
-
-	// if (quizCounter == quizLength) {
-	// 	currquestionAndAnswers.remove();
-
-	// 	form.querySelector("input[type=submit]").value = "try again";
-	// 	// player score start from 0
-	// 	if (playerScore) printResult(playerScore++);
-	// 	return;
-	// }
-
-	// console.log(playerScore);
 
 	const currQuestionAndAnswers = document.querySelector(
 		".question-and-answers-container"
 	);
+
+	console.log(quizProgress);
+	quizProgress.value = (quizCount / quizData.length) * 100;
 
 	// check for last card
 	if (!quizComplete && quizCount >= quizData.length) {
@@ -125,7 +121,9 @@ form.addEventListener("submit", (event) => {
 	}
 });
 
+// called on page load to set the first question and answers
 setQuestionAndAnswers();
+
 function setQuestionAndAnswers() {
 	question.textContent = quizData[quizCount].question;
 
