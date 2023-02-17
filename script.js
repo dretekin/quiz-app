@@ -1,4 +1,4 @@
-const quiz = [
+const quizData = [
 	{
 		question:
 			"What tag is used to define a container for an external app or plug-in",
@@ -63,103 +63,170 @@ const quizAnswersArr = [
 
 const form = document.querySelector("form");
 
-// createCard();
-let quizCounter = 0;
-const quizLength = quiz.length - 1;
-let playerScore = 0;
-console.log(quizLength);
+let quizCount = 0;
+let correctScoreCount = 0;
+// let totalScore = 0;
+let quizComplete = false;
 
 form.addEventListener("submit", (event) => {
 	event.preventDefault();
 
-	const currQuizCard = document.querySelector(".quizCard");
+	// if (userAnswer == quizAnswersArr[quizCounter]) playerScore++;
 
-	const userAnswer = currQuizCard.querySelector(
-		'input[name="answer"]:checked'
-	).value;
+	// if (quizCounter == quizLength) {
+	// 	currquestionAndAnswers.remove();
 
-	if (userAnswer == quizAnswersArr[quizCounter]) playerScore++;
+	// 	form.querySelector("input[type=submit]").value = "try again";
+	// 	// player score start from 0
+	// 	if (playerScore) printResult(playerScore++);
+	// 	return;
+	// }
 
-	if (quizCounter == quizLength) {
-		currQuizCard.remove();
+	// console.log(playerScore);
 
-		form.querySelector("input[type=submit]").value = "try again";
-		// player score start from 0
-		if (playerScore) printResult(playerScore++);
+	const currQuestionAndAnswers = document.querySelector(
+		".question-and-answers-container"
+	);
+
+	// check for last card
+	if (!quizComplete && quizCount >= quizData.length) {
+		getAndMarkUserAnswer();
+		currQuestionAndAnswers.remove();
+		quizComplete = true;
+		setFormHeight(0);
+
+		const totalScore = (correctScoreCount / quizData.length) * 100;
+		form.prepend(createScoreEle(totalScore));
+
+		document.querySelector("input[type=submit]").value = "Restart";
+
 		return;
 	}
 
-	console.log(playerScore);
+	if (quizComplete) {
+		window.location.reload();
+		return;
+	}
 
-	currQuizCard.remove();
+	// if (quizCount >= quizData.length - 1) {
 
-	quizCounter++;
+	// }
+	getAndMarkUserAnswer();
 
-	createCard(quiz[quizCounter]);
+	currQuestionAndAnswers.remove();
+
+	createCard(quizData[quizCount]);
+
+	// setFormHeight(100);
+
+	// quizCounter++;
+
+	function getAndMarkUserAnswer() {
+		const userAnswer = currQuestionAndAnswers.querySelector(
+			'input[name="answer"]:checked'
+		).value;
+
+		if (userAnswer == quizAnswersArr[quizCount - 1]) correctScoreCount++;
+	}
 });
 
-function printResult() {
-	const resultEle = document.createElement("p");
-	resultEle.setAttribute("class", "result");
-	const resultText = document.createTextNode(
-		`You answered ${playerScore} out of 10 questions correctly!`
+createCard(quizData[quizCount]);
+// createCard(quizData[1], createAnswers);
+
+/**
+ *
+ * @param {number} questionAndAnswersContainerHeight
+ */
+function setFormHeight(questionAndAnswersContainerHeight) {
+	document.documentElement.style.setProperty(
+		"--form-top-padding",
+		`${questionAndAnswersContainerHeight}px`
 	);
-	resultEle.appendChild(resultText);
-	form.prepend(resultEle);
 }
 
-createCard(quiz[0]);
+/**
+ *
+ * @param {number} score
+ * @returns html element
+ */
+function createScoreEle(score) {
+	const scoreEle = document.createElement("h2");
+	const scoreText = document.createTextNode(`Your score is ${score}%`);
+	scoreEle.setAttribute("class", "result");
+	scoreEle.appendChild(scoreText);
+	return scoreEle;
+}
 
-function createCard(quizObj) {
-	const quizCard = document.createElement("section");
-	quizCard.setAttribute("class", "quizCard");
+/**
+ *
+ * @param {object} questionAndAnswers
+ */
+function createCard(questionAndAnswers) {
+	quizCount++;
+	// question and aswers container
+	const questionAndAnswersContainer = document.createElement("section");
+	questionAndAnswersContainer.setAttribute(
+		"class",
+		"question-and-answers-container"
+	);
 
-	const answerItems = document.createElement("ul");
-	answerItems.setAttribute("class", "answers");
-
+	// question container
 	const question = document.createElement("h2");
-	const questionText = document.createTextNode(quizObj.question);
+	const questionText = document.createTextNode(questionAndAnswers.question);
 	question.setAttribute("class", "question");
 	question.appendChild(questionText);
 
-	quizCard.appendChild(question);
+	questionAndAnswersContainer.appendChild(question);
 
-	createAnswers(quizObj.answers);
+	const answerItems = createAnswers(questionAndAnswers.answers);
 
-	function createAnswers(asnwers) {
-		const answerArr = asnwers;
+	questionAndAnswersContainer.appendChild(answerItems);
 
-		answerArr.forEach((answer, index) => {
-			const answerItem = document.createElement("li");
-			answerItem.setAttribute("class", "answer-option-item");
+	form.prepend(questionAndAnswersContainer);
 
-			answerItems.appendChild(answerItem);
+	const currQuestionAndAnswersContainerHeight =
+		questionAndAnswersContainer.getBoundingClientRect().height;
 
-			const answerInput = document.createElement("input");
-			answerInput.setAttribute("type", "radio");
-			answerInput.setAttribute("id", "option-" + index);
-			answerInput.setAttribute("class", "answer-input");
-			answerInput.setAttribute("name", "answer");
-			answerInput.setAttribute("value", answer);
-			answerInput.required = true;
+	setFormHeight(currQuestionAndAnswersContainerHeight);
+}
 
-			answerItem.appendChild(answerInput);
+/**
+ *
+ * @param {array} asnwers
+ */
+function createAnswers(answersArray) {
+	// answers items container
+	const answerItems = document.createElement("ul");
+	answerItems.setAttribute("class", "answers");
 
-			const inputLabel = document.createElement("label");
-			const inputLabelText = document.createTextNode(answer);
-			const codeFormat = document.createElement("code");
-			codeFormat.appendChild(inputLabelText);
-			inputLabel.appendChild(codeFormat);
-			inputLabel.setAttribute("for", "option-" + index);
-			inputLabel.setAttribute("class", "answer-label");
+	answersArray.forEach((answer, index) => {
+		const answerItem = document.createElement("li");
+		answerItem.setAttribute("class", "answer-option-item");
 
-			answerItem.appendChild(inputLabel);
+		// answerItems.appendChild(answerItem);
 
-			answerItems.appendChild(answerItem);
-		});
-	}
+		const answerInput = document.createElement("input");
+		answerInput.setAttribute("type", "radio");
+		answerInput.setAttribute("id", "option-" + index);
+		answerInput.setAttribute("class", "answer-input");
+		answerInput.setAttribute("name", "answer");
+		answerInput.setAttribute("value", answer);
+		answerInput.required = true;
 
-	quizCard.appendChild(answerItems);
+		answerItem.appendChild(answerInput);
 
-	form.prepend(quizCard);
+		const inputLabel = document.createElement("label");
+		const inputLabelText = document.createTextNode(answer);
+		const codeFormat = document.createElement("code");
+		codeFormat.appendChild(inputLabelText);
+		inputLabel.appendChild(codeFormat);
+		inputLabel.setAttribute("for", "option-" + index);
+		inputLabel.setAttribute("class", "answer-label");
+
+		answerItem.appendChild(inputLabel);
+
+		answerItems.appendChild(answerItem);
+	});
+
+	return answerItems;
 }
